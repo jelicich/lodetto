@@ -9,13 +9,15 @@ gsap.registerPlugin(ScrollToPlugin);
 const gsapTimeline = gsap.timeline();
 
 function _to(el, options) {
-  if (isMobile?.() && !options.runInMobile) return;
+  if (isMobile?.() && options.runInMobile === false) return;
+  if (!isMobile?.() && options.runInDesktop === false) return;
   gsapTimeline.to(el, options.gsapOptions);
   gsapTimeline.progress(1).progress(0);
 }
 
 function _from(el, options) {
-  if (isMobile?.() && !options.runInMobile) return;
+  if (isMobile?.() && options.runInMobile === false) return;
+  if (!isMobile?.() && options.runInDesktop === false) return;
   gsapTimeline.from(el, options.gsapOptions);
   gsapTimeline.progress(1).progress(0);
 }

@@ -5,6 +5,8 @@ import "@/styles/styles.scss"
 
 Vue.config.productionTip = false
 
+export const bus = new Vue();
+
 Vue.directive("loading", Loading);
 
 new Vue({

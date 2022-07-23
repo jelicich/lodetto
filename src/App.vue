@@ -1,13 +1,17 @@
 <template>
   <div id="app">
-    <HomeView />
-    <MenuView />
-    <AboutView />
-    <ContactView />
+    <SiteMenu />
+    <div class="ViewsContainer">
+      <HomeView />
+      <MenuView />
+      <AboutView />
+      <ContactView />
+    </div>
   </div>
 </template>
 
 <script>
+import SiteMenu from "@/components/SiteMenu.vue";
 import HomeView from "@/views/Home.view.vue";
 import MenuView from "@/views/Menu.view.vue";
 import AboutView from "@/views/About.view.vue";
@@ -17,6 +21,7 @@ import AS from "@/services/Animation.service";
 export default {
   name: 'App',
   components: {
+    SiteMenu,
     HomeView,
     MenuView,
     AboutView,

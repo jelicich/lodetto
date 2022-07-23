@@ -1,5 +1,9 @@
 <template>
   <section class="MenuView View" id="menu">
+    <div class="View-overlay" :class="isOpen ? `open-${direction}` : ''" @click="openSection('up')">
+      <h2 class="View-overlayTitle">Menu</h2>  
+      <img class="View-overlayImage" src="@/assets/images/eyes_white.svg" alt="Lodetto eyes"/>
+    </div> 
     <h1 class="MenuView-title">Menu</h1>
     <CarouselSlider :show-controls="false" v-loading="isLoading">
       <article class="MenuView-menu">
@@ -44,6 +48,7 @@
 <script>
 import MenuService from "@/services/Menu.service";
 import CarouselSlider from "@/components/CarouselSlider.vue";
+import Overlay from "@/mixins/Overlay.mixin";
 import AS from "@/services/Animation.service";
 
 export default {
@@ -52,9 +57,12 @@ export default {
   components: {
     CarouselSlider
   },
+
+  mixins: [Overlay],
   
   data() {
     return {
+      sectionName: 'menu',
       coffeeMenu: null,
       foodMenu: null,
       isLoading: false,
@@ -84,6 +92,7 @@ export default {
       const TRIGGER_ELEMENT_SEL = "#menu";
       const animationOptions = {
         runInMobile: true,
+        runInDesktop: false,
         gsapOptions: {
           scrollTrigger: {
             trigger: TRIGGER_ELEMENT_SEL,
@@ -103,6 +112,7 @@ export default {
       const TRIGGER_ELEMENT_SEL = "#about";
       const animationOptions = {
         runInMobile: true,
+        runInDesktop: false,
         gsapOptions: {
           scrollTrigger: {
             trigger: TRIGGER_ELEMENT_SEL,
@@ -122,6 +132,7 @@ export default {
       const TRIGGER_ELEMENT_SEL = "#about";
       const animationOptions = {
         runInMobile: true,
+        runInDesktop: false,
         gsapOptions: {
           scrollTrigger: {
             trigger: TRIGGER_ELEMENT_SEL,
@@ -141,6 +152,7 @@ export default {
       const TRIGGER_ELEMENT_SEL = "#about";
       const animationOptions = {
         runInMobile: true,
+        runInDesktop: false,
         gsapOptions: {
           scrollTrigger: {
             trigger: TRIGGER_ELEMENT_SEL,
@@ -168,12 +180,18 @@ export default {
 
 <style lang="scss">
 @import "@/styles/variables.scss";
+@import "@/styles/breakpoints.scss";
 
 .MenuView {
-  background: $black url("@/assets/images/eyes_white.svg") no-repeat;
+  // background: $black url("@/assets/images/eyes_white.svg") no-repeat;
+  background: $black url("@/assets/images/rueda_white.svg") no-repeat;
   background-position: 50% 100%;
   background-size: 80vw;
   color: $white;
+
+  @include desktop-up {
+    background-size: 65%;
+  }
 
   &-title {
     font-size: 3rem;
@@ -204,6 +222,10 @@ export default {
   &-itemDescription {
     font-size: 14px;
     color: $gray-200;
+  }
+
+  .View-overlay {
+    background: $black;
   }
 }
 </style>

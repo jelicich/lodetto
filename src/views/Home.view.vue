@@ -4,14 +4,14 @@
       <div class="HomeView-mainInner">
         <div>
           <h1 class="HomeView-title">
-            <a href="#home">
+            <a href="#home" @click="bus.$emit('close', '');">
               <img class="HomeView-logo" src="@/assets/images/logo.svg" alt="Lodetto" />
             </a>
           </h1>
           <h2 class="HomeView-subtitle">
             <span>Cafe</span>
             <span>para</span>
-            <span class="HomeView-subtitleAnimated">{{ currentText }}</span>
+            <span class="HomeView-subtitleAnimated" :style="`font-size: ${currentText.size}`">{{ currentText.text }}</span>
           </h2>
         </div>
         <div class="HomeView-mainImageContainer">
@@ -29,12 +29,17 @@
 </template>
 <script>
 import AS from "@/services/Animation.service";
+import { bus } from "../main";
 
 const SUBTITLE_WORDS = [
-  "llevar",
-  "disfrutar",
-  "empezar",
-  "compartir",
+  {text: "llevar", size: '7rem'},
+  {text: "disfrutar", size: '7rem'},
+  {text: "empezar", size: '7rem'},
+  {text: "despertar", size: '6.5rem'},
+  {text: "volar", size: '7rem'},
+  {text: "activar", size: '7rem'},
+  {text: "rodar", size: '7rem'},
+  {text: "compartir", size: '6.5rem'},
 ]
 
 export default {
@@ -42,16 +47,33 @@ export default {
 
   data() {
     return {
+      sectionName: 'home',
       counter: 0,
-      currentText: SUBTITLE_WORDS[0]
+      currentText: '',
     }
+  },
+
+  computed: {
+    getRandom() {
+      const min = 0;
+      const max = SUBTITLE_WORDS.length;
+      let difference = max - min;
+      let rand = Math.random(); 
+      rand = Math.floor( rand * difference);
+      rand = rand + min;
+      return rand;
+    },
+
+    bus() {
+      return bus;
+    }
+  },
+
+  created() {
+    this.currentText = SUBTITLE_WORDS[this.getRandom]
   },
   
   mounted() {
-    window.addEventListener("load", () => {
-      this.startSubtitleAnimation();
-    });
-
     this.setLogoTransition();
     this.setSubtitleTransition();
     this.setImageTransition();
@@ -60,42 +82,12 @@ export default {
   },
 
   methods: {
-    startSubtitleAnimation() {
-      const TARGET_SEL = ".HomeView-subtitleAnimated";
-      let i = 0;
-
-      const fromOptions = {
-        runInMobile: true,
-        gsapOptions: {
-          delay: "0.5",
-          left: 0 - AS.helpers.vw(15),
-          opacity: 0,
-          ease: "power4",
-          repeat: -1,
-          yoyo: true,
-          repeatDelay: 1,
-          duration: 0.2,
-          onRepeat: () => {
-            if(i%2 === 0) {
-              console.log('repeat');
-              this.counter = this.counter === SUBTITLE_WORDS.length - 1 ? 0 : this.counter + 1;
-              this.currentText = SUBTITLE_WORDS[this.counter];
-            }
-            i++;
-          },
-         
-        },
-      };
-
-      AS.timeline.from(TARGET_SEL, fromOptions);
-
-    },
-
     setLogoTransition() {
       const TARGET_SEL = ".HomeView-logo";
       const TRIGGER_ELEMENT_SEL = "#menu";
       const animationOptions = {
         runInMobile: true,
+        runInDesktop: false,
         gsapOptions: {
           scrollTrigger: {
             trigger: TRIGGER_ELEMENT_SEL,
@@ -117,6 +109,7 @@ export default {
       const TRIGGER_ELEMENT_SEL = "#menu";
       const animationOptions = {
         runInMobile: true,
+        runInDesktop: false,
         gsapOptions: {
           scrollTrigger: {
             trigger: TRIGGER_ELEMENT_SEL,
@@ -136,6 +129,7 @@ export default {
       const TRIGGER_ELEMENT_SEL = "#menu";
       const animationOptions = {
         runInMobile: true,
+        runInDesktop: false,
         gsapOptions: {
           scrollTrigger: {
             trigger: TRIGGER_ELEMENT_SEL,
@@ -155,6 +149,7 @@ export default {
       const TRIGGER_ELEMENT_SEL = "#menu";
       const animationOptions = {
         runInMobile: true,
+        runInDesktop: false,
         gsapOptions: {
           scrollTrigger: {
             trigger: TRIGGER_ELEMENT_SEL,
@@ -174,6 +169,7 @@ export default {
       const TRIGGER_ELEMENT_SEL = "#menu";
       const animationOptions = {
         runInMobile: true,
+        runInDesktop: false,
         gsapOptions: {
           scrollTrigger: {
             trigger: TRIGGER_ELEMENT_SEL,
@@ -273,6 +269,10 @@ $animatedElHeightXxs: 60px;
     font-weight: bold;
     text-transform: uppercase;
     justify-content: space-between;
+
+    @include desktop-up {
+      display: none;
+    }
   }
 }
 </style>

@@ -92,3 +92,9 @@ $xl-breakpoint: 1904px;
     @media (orientation: landscape)
     {@content;}
 }
+
+@mixin desktop-up {
+    @include md-up {
+        @content;
+    }
+}

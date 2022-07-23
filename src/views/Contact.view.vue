@@ -1,14 +1,18 @@
 <template>
   <section class="ContactView View" id="contact">
+    <div class="View-overlay" :class="isOpen ? `open-${direction}` : ''" @click="openSection('up')">
+      <h2 class="View-overlayTitle">Contact</h2>  
+      <img class="View-overlayImage" src="@/assets/images/tazon_primary.svg" alt="Lodetto eyes"/>
+    </div> 
     <h1>Contact</h1>
     <p>Encontranos en nuestra tienda: <strong>Carrer de Valldonzella 36, Barcelona</strong> (<a class="ContactView-link" href="https://goo.gl/maps/1agyCp43aMDZn2mSA" target="_blank">Ver mapa</a>).</p>
     <p>Horarios: <strong>Lunes a Sabado de 8 a 18hs</strong>.</p>
     <ul>
-      <li>t. <a class="ContactView-link" href="tel:+34111111111">+34111111111</a></li>
-      <li>w. <a class="ContactView-link" href="https://wa.me/15551234567">+34111111111</a></li>
-      <li>e. <a class="ContactView-link" href="mailto:hola@lodetto.cafe">hola@lodetto.cafe</a></li>
+      <li>t. <a class="ContactView-link" target="_blank" :href="`tel:+${tel}`">+34 607 48 70 77</a></li>
+      <li>w. <a class="ContactView-link" target="_blank" :href="getWhatsappLink">+34 607 48 70 77</a></li>
+      <!-- <li>e. <a class="ContactView-link" href="mailto:hola@lodetto.cafe">hola@lodetto.cafe</a></li> -->
       <li>
-        <a href="https://www.instagram.com/lodetto" class="ContactView-socialButton" target="_blank">
+        <a href="https://www.instagram.com/lodettocafe" class="ContactView-socialButton" target="_blank">
           <span>
             <img class="ContactView-icon" src="@/assets/images/instagram_secondary.svg" alt="Instagram" />
             Seguinos en instagram
@@ -20,10 +24,29 @@
 </template>
 <script>
 import AS from "@/services/Animation.service";
+import Overlay from "@/mixins/Overlay.mixin";
+import { isMobile } from "@/utils";
 
 export default {
   name: "ContactView",
-  
+
+  mixins: [Overlay],
+
+  data() {
+    return {
+      sectionName: 'contact',
+      tel: '34607487077',
+    }
+  },
+
+  computed: {
+    getWhatsappLink() {
+      return isMobile()
+        ? `https://wa.me/+${this.tel}`
+        : `https://web.whatsapp.com/send/?phone=%2B${this.tel}&text&app_absent=0`;
+    }
+  },
+
   mounted() {
     this.setIntroImageTransition();
   },
@@ -34,6 +57,7 @@ export default {
       const TRIGGER_ELEMENT_SEL = "#contact";
       const animationOptions = {
         runInMobile: true,
+        runInDesktop: false,
         gsapOptions: {
           scrollTrigger: {
             trigger: TRIGGER_ELEMENT_SEL,
@@ -64,6 +88,10 @@ $angle: -20deg;
   background-position-y: 75vh;
   background-size: 90vw;
   color: $primary;
+
+  @include desktop-up {
+    background-size: 75%;
+  }
   
   &-link {
     color: $primary;
@@ -103,6 +131,15 @@ $angle: -20deg;
   &-icon {
     width: 20px;
     margin-right: 5px;
+  }
+
+  .View-overlay {
+    background: $secondary;
+  }
+
+  .View-overlayImage {
+    max-width: 90%;
+    max-height: 55%;
   }
 }
 </style>

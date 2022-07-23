@@ -1,5 +1,9 @@
 <template>
   <section class="AboutView View" id="about">
+    <div class="View-overlay" :class="isOpen ? `open-${direction}` : ''" @click="openSection('down')">
+      <h2 class="View-overlayTitle">About</h2>  
+      <img class="View-overlayImage" src="@/assets/images/fuego.svg" alt="Lodetto eyes"/>
+    </div> 
     <h1 class="AboutView-title">Nosotros</h1>
     <p class="AboutView-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum</p>
     <p class="AboutView-text">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit.</p>
@@ -8,9 +12,18 @@
 </template>
 <script>
 import AS from "@/services/Animation.service";
+import Overlay from "@/mixins/Overlay.mixin";
 
 export default {
   name: "AboutView",
+
+  mixins: [Overlay],
+
+  data() {
+    return {
+      sectionName: 'about',
+    }
+  },
 
   mounted() {
     this.setIntroImageTransition();
@@ -25,6 +38,7 @@ export default {
       const TRIGGER_ELEMENT_SEL = "#about";
       const animationOptions = {
         runInMobile: true,
+        runInDesktop: false,
         gsapOptions: {
           scrollTrigger: {
             trigger: TRIGGER_ELEMENT_SEL,
@@ -44,6 +58,7 @@ export default {
       const TRIGGER_ELEMENT_SEL = "#contact";
       const animationOptions = {
         runInMobile: true,
+        runInDesktop: false,
         gsapOptions: {
           scrollTrigger: {
             trigger: TRIGGER_ELEMENT_SEL,
@@ -63,6 +78,7 @@ export default {
       const TRIGGER_ELEMENT_SEL = "#contact";
       const animationOptions = {
         runInMobile: true,
+        runInDesktop: false,
         gsapOptions: {
           scrollTrigger: {
             trigger: TRIGGER_ELEMENT_SEL,
@@ -82,6 +98,7 @@ export default {
       const TRIGGER_ELEMENT_SEL = "#contact";
       const animationOptions = {
         runInMobile: true,
+        runInDesktop: false,
         gsapOptions: {
           scrollTrigger: {
             trigger: TRIGGER_ELEMENT_SEL,
@@ -104,10 +121,23 @@ export default {
 @import "@/styles/breakpoints.scss";
 
 .AboutView {
+  @include desktop-up {
+    display: flex;
+    flex-direction: column;
+  }
+
   &-image {
     display: block;
     margin: auto;
     width: 70%;
+
+    @include desktop-up {
+      margin: auto auto 0 auto;
+    }
+  }
+
+  .View-overlay {
+    background: $white;
   }
 }
 </style>
