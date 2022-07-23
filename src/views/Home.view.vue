@@ -177,7 +177,7 @@ export default {
             start: "top bottom",
             end: "bottom bottom",
           },
-          y: AS.helpers.vh(50),
+          y: AS.helpers.vh(60),
         },
       };
 
